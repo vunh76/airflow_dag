@@ -5,8 +5,8 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime, timedelta
 from kubernetes.client import models as k8s
-from airflow.contrib.kubernetes.volume_mount import VolumeMount
-from airflow.contrib.kubernetes.volume import Volume
+from airflow.kubernetes.volume_mount import VolumeMount
+from airflow.kubernetes.volume import Volume
 
 default_args = {
     'owner': 'airflow',
