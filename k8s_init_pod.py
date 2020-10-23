@@ -26,6 +26,7 @@ passing = KubernetesPodOperator(namespace='airflow',
                                 name="abacus-test",
                                 task_id="abacus-task",
                                 get_logs=True,
+                                full_pod_spec=None,
                                 pod_template_file="git_init_container.yaml",
                                 dag=dag
                                 )
