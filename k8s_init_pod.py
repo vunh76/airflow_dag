@@ -34,7 +34,7 @@ volume = k8s.V1Volume(
 )
 
 init_container_volume_mounts = [
-    k8s.V1VolumeMount(name='git-volume', mount_path='/tmp/git', sub_path=None, read_only=False)
+    V1VolumeMount(name='git-volume', mount_path='/tmp/git', sub_path=None, read_only=False)
 ]
 
 init_environments = [
