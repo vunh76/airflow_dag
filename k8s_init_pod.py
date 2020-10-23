@@ -5,8 +5,8 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime, timedelta
 from kubernetes.client import models as k8s
-#from airflow.kubernetes.volume_mount import VolumeMount
-#from airflow.kubernetes.volume import Volume
+from airflow.contrib.kubernetes.volume_mount import VolumeMount
+from airflow.contrib.kubernetes.volume import Volume
 
 default_args = {
     'owner': 'airflow',
@@ -23,7 +23,7 @@ dag = DAG(
     'k8s_init_pod', default_args=default_args, catchup=False, schedule_interval=None)
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
-'''
+
 volume_mount = VolumeMount(
     'git-volume', '/tmp/git', None, True
 )
@@ -69,16 +69,14 @@ abacus = KubernetesPodOperator(
         in_cluster=True,
         dag=dag
     )
-'''
-abacus = KubernetesPodOperator(namespace='airflow',
-                                 name="abacus-test",
-                                 task_id="abacus-task",
-                                 get_logs=True,
-                                 full_pod_spec=None,
-                                 pod_template_file="git_init_container.yaml",
-                                 dag=dag
-                                 )
 
-
+# abacus = KubernetesPodOperator(namespace='airflow',
+#                                 name="abacus-test",
+#                                 task_id="abacus-task",
+#                                 get_logs=True,
+#                                 full_pod_spec=None,
+#                                 pod_template_file="git_init_container.yaml",
+#                                 dag=dag
+#                                 )
 
 abacus.set_upstream(start)
