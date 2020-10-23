@@ -22,7 +22,8 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-passing = KubernetesPodOperator(name="abacus-test",
+passing = KubernetesPodOperator(namespace='airflow',
+                                name="abacus-test",
                                 task_id="abacus-task",
                                 get_logs=True,
                                 pod_template_file="git_init_container.yaml",
