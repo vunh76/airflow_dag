@@ -18,7 +18,7 @@ default_args = {
 }
 
 dag = DAG(
-    'k8s_pod', default_args=default_args, catchup=False, schedule_interval=None)
+    'k8s_init_pod', default_args=default_args, catchup=False, schedule_interval=None)
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
