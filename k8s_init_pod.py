@@ -66,6 +66,7 @@ abacus = KubernetesPodOperator(
         is_delete_operator_pod=True,
         init_containers=[init_container],
         priority_class_name="medium",
+        in_cluster=True,
         dag=dag
     )
 
