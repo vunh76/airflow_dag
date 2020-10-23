@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-sync-init-container
+  namespace: airflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: git-sync-init-container
+  template:
+    metadata:
+      labels:
+        name: git-sync-init-container
+    spec:
+      containers:
+      - name: git-sync
+        image: k8s.gcr.io/git-sync:v3.0.1
+        volumeMounts:
+        - name: git-volumn
+          mountPath: /tmp/git
+        env:
+        - name: GIT_SYNC_REPO
+          value: https://github.com/vunh76/udacity_cs_101.git
+        - name: GIT_SYNC_BRANCH
+          value: master
+        - name: GIT_SYNC_ONE_TIME
+          value: true
+      - name: abacus
+        image: python:3.7
+        command: ["python"]
+        args: ["/tmp/git/abacus.py"]
+        volumeMounts:
+        - name: git-volumn
+          mountPath: /tmp/git
+      volumes:
+      - name: git-volumn
+        emptyDir: {}
