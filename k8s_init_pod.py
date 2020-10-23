@@ -25,8 +25,8 @@ dag = DAG(
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
 volume_mount = VolumeMount(
-    name='git-volume', mount_path='/tmp/git', sub_path=None, read_only=True
-)
+    'git-volume', '/tmp/git', None, True
+).to_k8s_client_obj()
 
 volume = Volume(
     'git-volume',
@@ -36,7 +36,7 @@ volume = Volume(
 )
 
 init_container_volume_mounts = [
-    VolumeMount(mount_path='/tmp/git', name='git-volume', sub_path=None, read_only=False)
+    VolumeMount('git-volume', '/tmp/git', None, False).to_k8s_client_obj()
 ]
 
 init_environments = [
