@@ -29,7 +29,7 @@ volume_mount = VolumeMount(
 )
 
 volume = Volume(
-    name='git-volume',
+    'git-volume',
     {
         "empty_dir": k8s.V1EmptyDirVolumeSource()
     }
