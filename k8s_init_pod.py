@@ -5,6 +5,8 @@ from airflow.operators.dummy_operator import DummyOperator
 from airflow.utils.dates import days_ago
 from datetime import datetime, timedelta
 from kubernetes.client import models as k8s
+from airflow.kubernetes.volume_mount import VolumeMount
+from airflow.kubernetes.volume import Volume
 
 default_args = {
     'owner': 'airflow',
@@ -22,17 +24,19 @@ dag = DAG(
 
 start = DummyOperator(task_id='run_this_first', dag=dag)
 
-volume_mount = k8s.V1VolumeMount(
+volume_mount = VolumeMount(
     name='git-volume', mount_path='/tmp/git', sub_path=None, read_only=True
 )
 
-volume = k8s.V1Volume(
+volume = Volume(
     name='git-volume',
-    empty_dir=k8s.V1EmptyDirVolumeSource()
+    {
+        "empty_dir": k8s.V1EmptyDirVolumeSource()
+    }
 )
 
 init_container_volume_mounts = [
-    k8s.V1VolumeMount(mount_path='/tmp/git', name='git-volume', sub_path=None, read_only=False)
+    VolumeMount(mount_path='/tmp/git', name='git-volume', sub_path=None, read_only=False)
 ]
 
 init_environments = [
